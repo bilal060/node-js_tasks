@@ -71,7 +71,8 @@ app.get('/I/want/title', function (request, response) {
                 if(err){
                      response.status(404).send('<h1>404 Page Not Found</h1>');
                 }
-                response.send(  generateView(result));            
+                response.writeHead(200, {'Content-Type': 'text/plain'});
+	response.end(generateView(records));          
             });
     }
         
