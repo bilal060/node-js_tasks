@@ -5,7 +5,7 @@ var app = express();
 
 var q = require('q');
 
-function prepareUrl(param) {
+function ChkUrl(param) {
     var addressesArr = [];
     if (typeof(param.address) === 'string') {
         var str=param.address;
@@ -19,10 +19,13 @@ function prepareUrl(param) {
     return addressesArr;
 }
 
-function buildHtml(data) {
+function generateView(data) {
     var ret = '<html><title>List Items</title><ul>';
+var arr=[];
     for (var i = 0; i < data.length; i++) {
-        ret += '<li><b>' + data[i].url + '</b> --> <span>' + data[i].title + '</span></li>';
+        arr =  data[i].url.split('?');
+	ret += '<li><b>' + arr[0] + '</b>     --       ' + data[i].title + '</li>';
+        
     }
     return ret + '</ul></html>';
 }
@@ -75,9 +78,11 @@ app.get('/I/want/title', function (req, res) {
         res.send('<h1>No Titles Found</h1>')
     } else {
         // Get addresses array out of query params
-        var addresses =  prepareUrl(req.query);
-        entryPoint(addresses).then(function (titleList) {
-            res.send( buildHtml(titleList));
+        var addresses =  ChkUrl(req.query);
+         entryPoint(addresses).then(function (titleList) {
+         res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.end(generateView(titleList));
+           
         })
     }
 });
