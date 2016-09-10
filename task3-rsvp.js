@@ -91,7 +91,8 @@ app.get('/I/want/title', function (req, res) {
         });
         promise.then(function(result) {
             
-          res.send( generateView(result));
+          res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.end(generateView(records));
         }, function(err) {
            res.send( err);
         });
