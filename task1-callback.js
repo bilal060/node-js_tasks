@@ -7,7 +7,7 @@ function generateView(data) {
     var ret = '<html><title>List Items</title><ul>';
     for (var i = 0; i < data.length; i++) {
 		arr =  data[i].url.split('?');
-        ret += '<li><b>' +arr[0] + '</b> --> <span>' + data[i].title + '</span></li>';
+        ret += '<li><b>' +arr[0] + '</b> --' + data[i].title + '</li>';
     }
     return ret + '</ul></html>';
 }
@@ -56,7 +56,8 @@ app.get('/I/want/title', function (request, resonse) {
         for (var i = 0; i < Alladdresses.length; i++) {
             SendRequest(Alladdresses[i], function (err, result) {
                 if (!err) {records.push(result);} 
-                 resonse.send(  generateView(records));
+                 resonse.writeHead(200, {'Content-Type': 'text/plain'});
+	resonse.end(generateView(records)); 
             });
         }
     }
